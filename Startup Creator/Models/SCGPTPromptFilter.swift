@@ -9,37 +9,39 @@ import Foundation
 
 //Industries that can be used as a prompt
 enum Industry: String, CaseIterable {
-    case technology
-    case healthcare
-    case fintech = "financial tech"
-    case ecommerce
-    case education
-    case sustainability
-    case realestate = "real estate"
-    case marketing
-    case food
-    case entertainment
-    case travel
-    case transportation
-    case fashion
-    case home
-    case fitness
+    case technology = "Tech"
+    case healthcare = "Healthcare"
+    case fintech = "Financial Tech"
+    case ecommerce = "E-commerce"
+    case education = "Education"
+    case sustainability = "Sustainability"
+    case realestate = "Real Estate"
+    case marketing = "Marketing"
+    case food = "Food"
+    case entertainment = "Entertainment & media"
+    case travel = "Travel"
+    case transportation  = "Transportation"
+    case fashion = "Fashion"
+    case home = "Home"
+    case fitness = "Health and Fitness"
 }
 
-enum BusinessType: String {
-    case saas = "software as a service"
-    case physical = "physical product"
+enum MarketType: String, CaseIterable {
+    case local = "Local"
+    case global = "Global"
 }
 
-enum BusinessTarget: String {
-    case b2b = "business to business"
-    case b2c = "business to consumer"
+enum BusinessModel: String, CaseIterable {
+    case subscription = "subscription"
+    case marketplace = "marketplace"
+    case saas = "SaaS"
+    case dtc = "direct-to-consumer"
 }
 
 struct SCGPTPromptFilter {
     var industry: Industry?
-    var type: BusinessType?
-    var target: BusinessTarget?
+    var market: MarketType?
+    var businessModel: BusinessModel?
 }
 
 //Different keywords to use in the gpt prompts to vary the models' responses
@@ -48,6 +50,7 @@ enum SCGPTPromptKeyword{
         "Generate me a startup idea",
         "Give me a business idea",
         "Create a startup idea",
+        "Create a business idea",
         "Provide me with a business idea",
         "Create a unique startup idea",
         "Give me a unique business idea",
@@ -65,18 +68,19 @@ enum SCPrompt{
     static func createIdeaPrompt(filter: SCGPTPromptFilter, maxTokens: Int) -> String{
         let seed = Int.random(in: 0..<SCGPTPromptKeyword.beginningKeywords.count)
         let beginningKeyword = SCGPTPromptKeyword.beginningKeywords[seed]
-        let prompt = "\(beginningKeyword) in the \(filter.industry!.rawValue) industry that is a \(filter.type!.rawValue) along with a business model that is \(filter.target!.rawValue). In your response, provide me with the idea itself, the target audience, and the product, all within \(maxTokens) words. Make sure the last sentence of your response is finished properly."
+        let prompt = "\(beginningKeyword) in the \(filter.industry!.rawValue) industry that targets a \(filter.market!.rawValue) market and that has a \(filter.businessModel!.rawValue) business model. In your response, provide me with the idea itself, the target audience, and the product each within their own paragraph and within \(maxTokens) words or less."
+        print(prompt)
         return prompt
     }
     
     //Create prompt to ask gpt how to scale this type of business
-    static func createIdeaScalePrompt(content: String, maxTokens: Int) -> String {
-        let prompt = "Tell me how I could handle scaling this type of business in \(maxTokens) words: \n\(content)"
+    static func createIdeaScalePrompt(content: String) -> String {
+        let prompt = "Tell me how I could handle scaling this type of business in two paragraphs: \n\(content)"
         return prompt
     }
     
-    static func createIdeaEntryPrompt(content: String, maxTokens: Int) -> String {
-        let prompt = "Tell me how difficult entry can be into this type of business in \(maxTokens) words: \n\(content)"
+    static func createIdeaEntryPrompt(content: String) -> String {
+        let prompt = "Tell me how difficult entry can be into this type of business in two paragraphs: \n\(content)"
         return prompt
     }
 }

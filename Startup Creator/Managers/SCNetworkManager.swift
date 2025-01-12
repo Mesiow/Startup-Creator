@@ -11,7 +11,7 @@ import UIKit
 class SCNetworkManager {
     static let shared = SCNetworkManager()
     let gpt4BaseURL = URL(string: "https://api.openai.com/v1/chat/completions")
-    let maxTokens = 120
+    let maxTokens = 130
     
     private init() { }
     

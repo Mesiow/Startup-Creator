@@ -21,7 +21,7 @@ class SCHomeVC: UIViewController {
     private var filtersButton = UIButton(type: .system)
     
     //default
-    private var filter = SCGPTPromptFilter(industry: nil, type: nil, target: nil)
+    private var filter = SCGPTPromptFilter(industry: nil, market: nil, businessModel: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +35,7 @@ class SCHomeVC: UIViewController {
     private func pushStartupIdeaVC(response: SCGPTResponse){
         //Update UI on the main thread
         DispatchQueue.main.async {
+            self.removeActivityLoadingView()
             let content = getSCGPTResponseMessage(response: response) ?? ""
         
             let startupIdeaVC = SCStartupIdeaVC(delegate: self.listDelegate, content: content)
@@ -43,10 +44,13 @@ class SCHomeVC: UIViewController {
     }
     
     @objc func findButtonPressed(_ sender: UIButton){
-        guard filter.industry != nil, filter.type != nil, filter.target != nil else {
+        guard filter.industry != nil, filter.market != nil, filter.businessModel != nil else {
             presentAlertOnMainThread(title: "Enter your filters", message: "You must enter filters so we have a general idea of what type of business idea to provide to you.")
             return
         }
+        
+        //show activity loader
+        self.showActivityLoadingView()
         
         let prompt = SCPrompt.createIdeaPrompt(filter: filter, maxTokens: SCNetworkManager.shared.maxTokens)
         SCNetworkManager.shared.makeRequest(prompt: prompt) { [weak self] result in
@@ -57,6 +61,7 @@ class SCHomeVC: UIViewController {
                     pushStartupIdeaVC(response: response)
                 
                 case .failure(let error):
+                    DispatchQueue.main.async { self.removeActivityLoadingView() }
                     self.presentAlertOnMainThread(title: "Something went wrong", message: error.rawValue)
             }
         }

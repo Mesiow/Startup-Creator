@@ -31,7 +31,8 @@ class SCStartupIdeaCell: UICollectionViewCell {
     }
     
     func set(content: String){
-        titleLabel.attributedText = getMarkdownTextFromGPTResponse(content: content, fontSize: 18.0, truncate: true)
+        let attrStr = getMarkdownTextFromGPTResponse(content: content, fontSize: 18.0, truncate: true)
+        self.titleLabel.attributedText = attrStr
     }
     
     private func configure(){
@@ -43,6 +44,7 @@ class SCStartupIdeaCell: UICollectionViewCell {
         contentView.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.numberOfLines = 3
+        titleLabel.lineBreakMode = .byTruncatingTail
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),

@@ -13,24 +13,7 @@ protocol SCSavedStartupIdeaListDelegate: AnyObject {
 
 class SCSavedStartupIdeaListVC: UIViewController {
     
-    private lazy var collectionView: UICollectionView = {
-            let flowLayout = UICollectionViewFlowLayout()
-            flowLayout.scrollDirection = .vertical
-            flowLayout.minimumLineSpacing = 15;
-            flowLayout.minimumInteritemSpacing = 1;
-        
-            let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-            collectionView.register(SCStartupIdeaCell.self, forCellWithReuseIdentifier: SCStartupIdeaCell.identifier)
-            collectionView.delegate = self
-            collectionView.dataSource = self
-            collectionView.backgroundColor = .clear
-            collectionView.showsVerticalScrollIndicator = false
-            collectionView.allowsSelection = true;
-            collectionView.isScrollEnabled = true;
-            collectionView.translatesAutoresizingMaskIntoConstraints = false
-            
-            return collectionView
-        }()
+    private var collectionView: UICollectionView!
     
     var ideas: [Idea] = []
     
@@ -60,6 +43,21 @@ class SCSavedStartupIdeaListVC: UIViewController {
     }
     
     private func configureCollectionView(){
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 15;
+        flowLayout.minimumInteritemSpacing = 1;
+    
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.register(SCStartupIdeaCell.self, forCellWithReuseIdentifier: SCStartupIdeaCell.identifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.allowsSelection = true;
+        collectionView.isScrollEnabled = true;
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),

@@ -1,13 +1,13 @@
 {
-  "originHash" : "142fa79aa03e2f4699068e703a1dc38f12779d0ed20fd7b79fa58d44fc1e2a0e",
+  "originHash" : "984c864fdacdffbc73f345aa496228b8322e4d3ea9052b404f8a8b88d3e15dce",
   "pins" : [
     {
-      "identity" : "down",
+      "identity" : "markdownkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/johnxnguyen/Down.git",
+      "location" : "https://github.com/bmoliveira/MarkdownKit.git",
       "state" : {
-        "branch" : "master",
-        "revision" : "e754ab1c80920dd51a8e08290c912ac1c2ac8b58"
+        "revision" : "5056f3305d3499f44d8815530d560b87082e0cf5",
+        "version" : "1.7.1"
       }
     }
   ],

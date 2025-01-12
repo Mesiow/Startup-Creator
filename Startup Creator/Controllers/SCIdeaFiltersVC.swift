@@ -15,9 +15,9 @@ class SCIdeaFiltersVC: UIViewController {
     private var filtersView = UIView()
     
     private var industryTypeFilterButton = UIButton(type: .system)
-    private var businessTypeFilterButton = UIButton(type: .system)
-    private var businessTargetFilterButton = UIButton(type: .system)
-    private var filter = SCGPTPromptFilter(industry: nil, type: nil, target: nil)
+    private var marketTypeFilterButton = UIButton(type: .system)
+    private var businessModelFilterButton = UIButton(type: .system)
+    private var filter = SCGPTPromptFilter(industry: nil, market: nil, businessModel: nil)
     
     init(delegate: SCHomeDelegate, currentFilter: SCGPTPromptFilter){
         self.delegate = delegate
@@ -54,8 +54,8 @@ class SCIdeaFiltersVC: UIViewController {
     
     private func updateFilterText(){
         if filter.industry != nil { industryTypeFilterButton.setTitle(filter.industry!.rawValue, for: .normal)}
-        if filter.type != nil { businessTypeFilterButton.setTitle(filter.type!.rawValue, for: .normal)}
-        if filter.target != nil { businessTargetFilterButton.setTitle(filter.target!.rawValue, for: .normal)}
+        if filter.market != nil { marketTypeFilterButton.setTitle(filter.market!.rawValue, for: .normal)}
+        if filter.businessModel != nil { businessModelFilterButton.setTitle(filter.businessModel!.rawValue, for: .normal)}
     }
     
     private func configureDismissButton(){
@@ -100,33 +100,33 @@ class SCIdeaFiltersVC: UIViewController {
         ])
     }
     
-    private func createFilterMenuBusinessType() -> UIMenu {
-         let action1 = UIAction(title: BusinessType.saas.rawValue, handler: { [weak self] action in
-             guard let self = self else { return }
-             self.filter.type = .saas
-             self.businessTypeFilterButton.setTitle(action.title, for: .normal)
-         })
-         let action2 = UIAction(title: BusinessType.physical.rawValue, handler: { [weak self] action in
-             guard let self = self else { return }
-             self.filter.type = .physical
-             self.businessTypeFilterButton.setTitle(action.title, for: .normal)
-         })
-         let menu = UIMenu(title: "Business Type", options: .displayInline, children: [action1, action2])
-         return menu
+    private func createFilterMenuMarketType() -> UIMenu {
+        var actions: [UIAction] = []
+        for type in MarketType.allCases {
+            let action = UIAction(title: type.rawValue) { [weak self] action in
+                guard let self = self else { return }
+                self.filter.market = type
+                self.marketTypeFilterButton.setTitle(action.title, for: .normal)
+            }
+            actions.append(action)
+        }
+        
+        let menu = UIMenu(title: "Market", options: .displayInline, children: actions)
+        return menu
      }
      
-     private func createFilterMenuBusinessTarget() -> UIMenu {
-         let action1 = UIAction(title: BusinessTarget.b2c.rawValue, handler: { [weak self] action in
-             guard let self = self else { return }
-             self.filter.target = .b2c
-             self.businessTargetFilterButton.setTitle(action.title, for: .normal)
-         })
-         let action2 = UIAction(title: BusinessTarget.b2b.rawValue, handler: { [weak self] action in
-             guard let self = self else { return }
-             self.filter.target = .b2b
-             self.businessTargetFilterButton.setTitle(action.title, for: .normal)
-         })
-         let menu = UIMenu(title: "Business Model", options: .displayInline, children: [action1, action2])
+     private func createFilterMenuBusinessModel() -> UIMenu {
+         var actions: [UIAction] = []
+         for type in BusinessModel.allCases {
+             let action = UIAction(title: type.rawValue) { [weak self] action in
+                 guard let self = self else { return }
+                 self.filter.businessModel = type
+                 self.businessModelFilterButton.setTitle(action.title, for: .normal)
+             }
+             actions.append(action)
+         }
+         
+         let menu = UIMenu(title: "Business Model", options: .displayInline, children: actions)
          return menu
      }
     
@@ -148,16 +148,16 @@ class SCIdeaFiltersVC: UIViewController {
     
     private func configureFilterButtonMenus(){
         industryTypeFilterButton.setTitle("Industry", for: .normal)
-        businessTypeFilterButton.setTitle("Business Type", for: .normal)
-        businessTargetFilterButton.setTitle("Business Model", for: .normal)
+        marketTypeFilterButton.setTitle("Market", for: .normal)
+        businessModelFilterButton.setTitle("Business Model", for: .normal)
         
         configureFilterButton(industryTypeFilterButton)
-        configureFilterButton(businessTypeFilterButton)
-        configureFilterButton(businessTargetFilterButton)
+        configureFilterButton(marketTypeFilterButton)
+        configureFilterButton(businessModelFilterButton)
         
         industryTypeFilterButton.menu = createFilterMenuIndustry()
-        businessTypeFilterButton.menu = createFilterMenuBusinessType()
-        businessTargetFilterButton.menu = createFilterMenuBusinessTarget()
+        marketTypeFilterButton.menu = createFilterMenuMarketType()
+        businessModelFilterButton.menu = createFilterMenuBusinessModel()
         
         let width = 180.0
         let height = 44.0
@@ -166,21 +166,21 @@ class SCIdeaFiltersVC: UIViewController {
             industryTypeFilterButton.widthAnchor.constraint(equalToConstant: width),
             industryTypeFilterButton.heightAnchor.constraint(equalToConstant: height),
             
-            businessTargetFilterButton.widthAnchor.constraint(equalToConstant: width),
-            businessTargetFilterButton.heightAnchor.constraint(equalToConstant: height),
+            businessModelFilterButton.widthAnchor.constraint(equalToConstant: width),
+            businessModelFilterButton.heightAnchor.constraint(equalToConstant: height),
             
-            businessTypeFilterButton.widthAnchor.constraint(equalToConstant: width),
-            businessTypeFilterButton.heightAnchor.constraint(equalToConstant: height),
+            marketTypeFilterButton.widthAnchor.constraint(equalToConstant: width),
+            marketTypeFilterButton.heightAnchor.constraint(equalToConstant: height),
             
             
             industryTypeFilterButton.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: 5),
             industryTypeFilterButton.centerXAnchor.constraint(equalTo: filtersView.centerXAnchor),
             
-            businessTypeFilterButton.topAnchor.constraint(equalTo: industryTypeFilterButton.bottomAnchor, constant: 5),
-            businessTypeFilterButton.centerXAnchor.constraint(equalTo: industryTypeFilterButton.centerXAnchor),
+            marketTypeFilterButton.topAnchor.constraint(equalTo: industryTypeFilterButton.bottomAnchor, constant: 5),
+            marketTypeFilterButton.centerXAnchor.constraint(equalTo: industryTypeFilterButton.centerXAnchor),
             
-            businessTargetFilterButton.topAnchor.constraint(equalTo: businessTypeFilterButton.bottomAnchor, constant: 5),
-            businessTargetFilterButton.centerXAnchor.constraint(equalTo: businessTypeFilterButton.centerXAnchor)
+            businessModelFilterButton.topAnchor.constraint(equalTo: marketTypeFilterButton.bottomAnchor, constant: 5),
+            businessModelFilterButton.centerXAnchor.constraint(equalTo: marketTypeFilterButton.centerXAnchor)
         ])
     }
     

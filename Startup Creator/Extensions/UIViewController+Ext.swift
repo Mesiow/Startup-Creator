@@ -7,6 +7,8 @@
 
 import UIKit
 
+fileprivate var aView: UIView?
+
 extension UIViewController {
     func presentAlertOnMainThread(title: String, message: String) {
         DispatchQueue.main.async {
@@ -16,4 +18,22 @@ extension UIViewController {
         }
     }
     
+    func showActivityLoadingView(){
+        aView = UIView(frame: self.view.bounds)
+        aView!.backgroundColor = SCColors.background?.withAlphaComponent(0.7)
+        
+        let activityView = UIActivityIndicatorView(style: .large)
+        activityView.color = .label
+        activityView.center = aView!.center
+        activityView.startAnimating()
+        aView!.addSubview(activityView)
+        self.view.addSubview(aView!)
+    }
+    
+    func removeActivityLoadingView(){
+        if aView != nil {
+            aView!.removeFromSuperview()
+            aView = nil
+        }
+    }
 }

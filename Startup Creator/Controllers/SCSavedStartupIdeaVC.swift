@@ -46,8 +46,10 @@ class SCSavedStartupIdeaVC: UIViewController {
     }
     
     @objc func scaleButtonPressed(){
+        self.showActivityLoadingView()
+        
         let contentCleaned = parseMarkdownToPlainText(markdown: idea.content!) ?? ""
-        let scalePrompt = SCPrompt.createIdeaScalePrompt(content: contentCleaned, maxTokens: SCNetworkManager.shared.maxTokens)
+        let scalePrompt = SCPrompt.createIdeaScalePrompt(content: contentCleaned)
         print(scalePrompt)
         
         SCNetworkManager.shared.makeRequest(prompt: scalePrompt) { [weak self] result in
@@ -55,12 +57,15 @@ class SCSavedStartupIdeaVC: UIViewController {
             switch result {
                 case .success(let response):
                     DispatchQueue.main.async {
+                        self.removeActivityLoadingView()
+                        
                         let content = getSCGPTResponseMessage(response: response) ?? ""
-                        let ideaQuestionVC = SCIdeaQuestionVC(title: "How to Scale?", content: content)
+                        let ideaQuestionVC = SCIdeaQuestionVC(title: "Scale", content: content)
                         self.present(ideaQuestionVC, animated: true)
                     }
                 
                 case .failure(let error):
+                    DispatchQueue.main.async { self.removeActivityLoadingView() }
                     self.presentAlertOnMainThread(title: "Something went wrong", message: error.rawValue)
             }
         }
@@ -68,8 +73,10 @@ class SCSavedStartupIdeaVC: UIViewController {
     }
     
     @objc func entryButtonPressed(){
+        self.showActivityLoadingView()
+        
         let contentCleaned = parseMarkdownToPlainText(markdown: idea.content!) ?? ""
-        let entryPrompt = SCPrompt.createIdeaEntryPrompt(content: contentCleaned, maxTokens: SCNetworkManager.shared.maxTokens)
+        let entryPrompt = SCPrompt.createIdeaEntryPrompt(content: contentCleaned)
         print(entryPrompt)
         
         SCNetworkManager.shared.makeRequest(prompt: entryPrompt) { [weak self] result in
@@ -77,20 +84,23 @@ class SCSavedStartupIdeaVC: UIViewController {
             switch result {
                 case .success(let response):
                     DispatchQueue.main.async {
+                        self.removeActivityLoadingView()
+                        
                         let content = getSCGPTResponseMessage(response: response) ?? ""
-                        let ideaQuestionVC = SCIdeaQuestionVC(title: "Entry Difficulty", content: content)
+                        let ideaQuestionVC = SCIdeaQuestionVC(title: "Entry", content: content)
                         self.present(ideaQuestionVC, animated: true)
                     }
                 
                 case .failure(let error):
+                    DispatchQueue.main.async { self.removeActivityLoadingView() }
                     self.presentAlertOnMainThread(title: "Something went wrong", message: error.rawValue)
             }
         }
     }
     
     private func configureButtons(){
-        configureButton(scaleButton, text: "How to scale?")
-        configureButton(entryButton, text: "Is entry difficult?")
+        configureButton(scaleButton, text: "Scaling")
+        configureButton(entryButton, text: "Entry")
         
         scaleButton.addTarget(self, action: #selector(scaleButtonPressed), for: .touchUpInside)
         entryButton.addTarget(self, action: #selector(entryButtonPressed), for: .touchUpInside)

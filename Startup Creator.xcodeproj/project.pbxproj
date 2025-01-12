@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C033009A2D30ACCD007391AE /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = C03300992D30ACCD007391AE /* Down */; };
+		C03301512D335F2B007391AE /* MarkdownKit in Frameworks */ = {isa = PBXBuildFile; productRef = C03301502D335F2B007391AE /* MarkdownKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C033009A2D30ACCD007391AE /* Down in Frameworks */,
+				C03301512D335F2B007391AE /* MarkdownKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +83,7 @@
 			);
 			name = "Startup Creator";
 			packageProductDependencies = (
-				C03300992D30ACCD007391AE /* Down */,
+				C03301502D335F2B007391AE /* MarkdownKit */,
 			);
 			productName = "Startup Creator";
 			productReference = C03300372D287176007391AE /* Startup Creator.app */;
@@ -114,7 +114,7 @@
 			mainGroup = C033002E2D287176007391AE;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				C03300982D30ACCD007391AE /* XCRemoteSwiftPackageReference "Down" */,
+				C033014F2D335F2B007391AE /* XCRemoteSwiftPackageReference "MarkdownKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C03300382D287176007391AE /* Products */;
@@ -358,21 +358,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C03300982D30ACCD007391AE /* XCRemoteSwiftPackageReference "Down" */ = {
+		C033014F2D335F2B007391AE /* XCRemoteSwiftPackageReference "MarkdownKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/johnxnguyen/Down.git";
+			repositoryURL = "https://github.com/bmoliveira/MarkdownKit.git";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C03300992D30ACCD007391AE /* Down */ = {
+		C03301502D335F2B007391AE /* MarkdownKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C03300982D30ACCD007391AE /* XCRemoteSwiftPackageReference "Down" */;
-			productName = Down;
+			package = C033014F2D335F2B007391AE /* XCRemoteSwiftPackageReference "MarkdownKit" */;
+			productName = MarkdownKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
